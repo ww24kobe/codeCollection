@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script
+    async
+    src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"
+  ></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react",
+        "react-dom/client": "https://esm.sh/react-dom/client"
+      }
+    }
+  </script>
+  <script type="text/babel" data-type="module">
+    import React, { useRef } from 'react'
+    import { createRoot } from 'react-dom/client'
+
+    function App() {
+      const inputRef = useRef(null)
+      const selectInupt = () => {
+        const inputEle = inputRef.current
+        inputEle.select()
+      }
+      return (
+        <>
+          <h1>App</h1>
+          <input ref={inputRef} type="text" defaultValue="hello ref" />
+          <button onClick={selectInupt}>选中</button>
+        </>
+      )
+    }
+
+    const root = createRoot(document.getElementById('root'))
+    root.render(<App />)
+  </script>
+</html>
