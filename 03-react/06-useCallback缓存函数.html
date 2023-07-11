@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script
+    async
+    src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"
+  ></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react",
+        "react-dom/client": "https://esm.sh/react-dom/client"
+      }
+    }
+  </script>
+  <script type="text/babel" data-type="module">
+    import React, { useCallback, useState, useMemo } from 'react'
+    import { createRoot } from 'react-dom/client'
+
+    // 1. 如果子组件仅展示纯静态页面，可通过memo进行缓存，可以避免重新渲染rerender
+    // 2. 若给子组件传递了props,在利用useMemo或useCallback进行缓存
+    const Child = React.memo(function ({ foo }) {
+      console.log('child render')
+      return (
+        <p onClick={foo} style={{ border: '1px solid #666', padding: '10px' }}>
+          子组件
+        </p>
+      )
+    })
+
+    function App() {
+      console.log('app render')
+      const [count, setCount] = useState(0)
+      const addCount = () => {
+        setCount(count + 1)
+      }
+      // useCallback缓存同一个函数引用
+      // const bar = useCallback(function () {
+      //   console.log('bar')
+      // }, [])
+
+      // 等价于上面
+      const bar = useMemo(
+        () => () => {
+          console.log('bar')
+        },
+        []
+      )
+      return (
+        <>
+          <p>count:{count}</p>
+          <button onClick={addCount}>count++</button>
+          <Child foo={bar} />
+        </>
+      )
+    }
+
+    const root = createRoot(document.getElementById('root'))
+    root.render(<App />)
+  </script>
+</html>
