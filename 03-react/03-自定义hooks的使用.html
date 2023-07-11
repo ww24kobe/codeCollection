@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script
+    async
+    src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"
+  ></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react",
+        "react-dom/client": "https://esm.sh/react-dom/client"
+      }
+    }
+  </script>
+  <script type="text/babel" data-type="module">
+    import React, { useState, useEffect, useRef } from 'react'
+    import { createRoot } from 'react-dom/client'
+    import { useTitle, useMouse, useUserData } from './hooks/index.js'
+    function App() {
+      useTitle('哈哈哈')
+      const { x, y } = useMouse()
+      const { loading, data } = useUserData()
+      return (
+        <>
+          <h1>App</h1>
+          <p>
+            x: {x}, y: {y}
+          </p>
+          <p>{loading ? '加载中...' : data}</p>
+        </>
+      )
+    }
+
+    const root = createRoot(document.getElementById('root'))
+    root.render(<App />)
+  </script>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script
+    async
+    src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"
+  ></script>
+  <script src="../node_modules/dayjs/dayjs.min.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react",
+        "react-dom/client": "https://esm.sh/react-dom/client"
+      }
+    }
+  </script>
+  <script type="text/babel" data-type="module">
+    import { v4 as uuidv4 } from '../node_modules/uuid/dist/esm-browser/index.js'
+    import React, { useState, useEffect, useRef } from 'react'
+    import { createRoot } from 'react-dom/client'
+    // 当异步函数获取state时，可能不是当前最新的state
+    // 可使用useRef来解决
+    function App() {
+      const [count, setCount] = useState(0)
+      const countRef = useRef(0)
+      const add = () => setCount(count + 1)
+      const show = () => {
+        setTimeout(() => {
+          console.log(countRef.current)
+        }, 3000)
+      }
+
+      useEffect(() => {
+        countRef.current = count
+      }, [count])
+
+      return (
+        <>
+          <p>count: {count}</p>
+          <p>
+            <button onClick={add}>count++</button>
+            <button onClick={show}>showCount</button>
+          </p>
+          <button
+            onClick={() => {
+              console.log(uuidv4())
+              console.log(dayjs().format('YYYY-MM-DD HH:mm:ss'))
+            }}
+          >
+            Test Lib
+          </button>
+        </>
+      )
+    }
+
+    const root = createRoot(document.getElementById('root'))
+    root.render(<App />)
+  </script>
+</html>

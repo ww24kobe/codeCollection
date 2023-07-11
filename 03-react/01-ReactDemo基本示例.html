@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script
+    async
+    src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"
+  ></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react",
+        "react-dom/client": "https://esm.sh/react-dom/client"
+      }
+    }
+  </script>
+  <script type="text/babel" data-type="module">
+    import React from 'react'
+    import { createRoot } from 'react-dom/client'
+    function Welcome({ username, onClickHandler }) {
+      return (
+        <button
+          onClick={(e) => {
+            onClickHandler(username)
+          }}
+        >
+          {username}
+        </button>
+      )
+    }
+
+    function App() {
+      return (
+        <>
+          <h1>App</h1>
+          <Welcome
+            username="佩奇"
+            onClickHandler={(msg) => {
+              console.log('父亲你好，你给取得名字是：', msg)
+            }}
+          />
+        </>
+      )
+    }
+
+    const root = createRoot(document.getElementById('root'))
+    root.render(<App />)
+  </script>
+</html>
