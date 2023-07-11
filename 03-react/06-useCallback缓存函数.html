@@ -25,7 +25,7 @@
     const Child = React.memo(function ({ foo }) {
       console.log('child render')
       return (
-        <p onClick={foo} style={{ border: '1px solid #666', padding: '10px' }}>
+        <p onClick={foo} style={{ border: '1px solid green', padding: '10px' }}>
           子组件
         </p>
       )
@@ -50,11 +50,11 @@
         []
       )
       return (
-        <>
+        <div style={{ border: '1px solid red', padding: '10px' }}>
           <p>count:{count}</p>
           <button onClick={addCount}>count++</button>
           <Child foo={bar} />
-        </>
+        </div>
       )
     }
 
