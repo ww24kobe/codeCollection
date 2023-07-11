@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script
+    async
+    src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"
+  ></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react",
+        "react-dom/client": "https://esm.sh/react-dom/client"
+      }
+    }
+  </script>
+  <script type="text/babel" data-type="module">
+    import React, { useState, useContext, createContext } from 'react'
+    import { createRoot } from 'react-dom/client'
+
+    // 创建上下文
+    const CountContext = createContext()
+
+    function Child() {
+      const count = useContext(CountContext)
+      return (
+        <div style={{ border: '1px solid blue', padding: '10px' }}>
+          <h1>Child组件</h1>
+          <p>count:{count}</p>
+        </div>
+      )
+    }
+
+    function Middle() {
+      // 消费context
+      const count = useContext(CountContext)
+      return (
+        <div style={{ border: '1px solid green', padding: '10px' }}>
+          <h1>Middle组件</h1>
+          <p>count:{count}</p>
+          <Child />
+        </div>
+      )
+    }
+
+    function App() {
+      const [count, setCount] = useState(0)
+      return (
+        <div style={{ border: '1px solid red', padding: '10px' }}>
+          <h1>App组件</h1>
+          <p>
+            count:{count}
+            <button
+              onClick={() => {
+                setCount(count + 1)
+              }}
+            >
+              count++
+            </button>
+          </p>
+          <CountContext.Provider value={count}>
+            <Middle />
+          </CountContext.Provider>
+        </div>
+      )
+    }
+
+    const root = createRoot(document.getElementById('root'))
+    root.render(<App />)
+  </script>
+</html>
