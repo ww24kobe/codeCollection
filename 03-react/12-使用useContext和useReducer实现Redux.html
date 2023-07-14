@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script
+    async
+    src="https://ga.jspm.io/npm:es-module-shims@1.7.0/dist/es-module-shims.js"
+  ></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react",
+        "react-dom/client": "https://esm.sh/react-dom/client"
+      }
+    }
+  </script>
+  <script type="text/babel" data-type="module">
+    import { createRoot } from 'react-dom/client'
+    import React, { createContext, useContext, useReducer } from 'react'
+
+    // 创建一个新的Context
+    const StoreContext = createContext()
+
+    // 创建一个自定义的Provider组件
+    const StoreProvider = ({ children }) => {
+      const initialState = { count: 0 }
+      const [state, dispatch] = useReducer((state, action) => {
+        switch (action.type) {
+          case 'INCREMENT':
+            return { count: state.count + 1 }
+          case 'DECREMENT':
+            return { count: state.count - 1 }
+          default:
+            return state
+        }
+      }, initialState)
+
+      return (
+        <StoreContext.Provider value={{ state, dispatch }}>
+          {children}
+        </StoreContext.Provider>
+      )
+    }
+
+    // 自定义的Hook，用于在组件中获取状态和派发操作
+    const useStore = () => {
+      const context = useContext(StoreContext)
+      if (!context) {
+        throw new Error('useStore must be used within a StoreProvider')
+      }
+      return context
+    }
+
+    function Welcome() {
+      //   const { state, dispatch } = useStore()
+      // 等价于
+      const { state, dispatch } = useContext(StoreContext)
+      return (
+        <p
+          style={{ border: '1px solid blue', padding: '10px', margin: '10px' }}
+        >
+          <h3>Welcome组件</h3>
+          count:{state.count}
+          <button
+            onClick={() => {
+              dispatch({ type: 'INCREMENT' })
+            }}
+          >
+            Increment
+          </button>
+          <button
+            onClick={() => {
+              dispatch({ type: 'DECREMENT' })
+            }}
+          >
+            Decrement
+          </button>
+        </p>
+      )
+    }
+
+    function Hello() {
+      const { state, dispatch } = useStore()
+      return (
+        <p
+          style={{
+            border: '1px solid skyblue',
+            padding: '10px',
+            margin: '10px',
+          }}
+        >
+          <h3>Hello组件</h3>
+          count:{state.count}
+          <button
+            onClick={() => {
+              dispatch({ type: 'INCREMENT' })
+            }}
+          >
+            Increment
+          </button>
+          <button
+            onClick={() => {
+              dispatch({ type: 'DECREMENT' })
+            }}
+          >
+            Decrement
+          </button>
+        </p>
+      )
+    }
+
+    const Counter = () => {
+      const { state, dispatch } = useStore()
+      return (
+        <div
+          style={{ border: '1px solid green', padding: '10px', margin: '10px' }}
+        >
+          <h3>Counter组件</h3>
+          <p>Count: {state.count}</p>
+          <p>double: {state.count * 2} 元</p>
+          <button
+            onClick={() => {
+              dispatch({ type: 'INCREMENT' })
+            }}
+          >
+            Increment
+          </button>
+          <button
+            onClick={() => {
+              dispatch({ type: 'DECREMENT' })
+            }}
+          >
+            Decrement
+          </button>
+          <Welcome />
+        </div>
+      )
+    }
+
+    // 在根组件中使用Provider包裹需要共享状态的子组件
+    const App = () => {
+      const { state, dispatch } = useStore()
+      return (
+        <div
+          style={{ border: '1px solid red', padding: '10px', margin: '10px' }}
+        >
+          <h3>App组件</h3>
+          <p>Count: {state.count}</p>
+          <button
+            onClick={() => {
+              dispatch({ type: 'INCREMENT' })
+            }}
+          >
+            Increment
+          </button>
+          <button
+            onClick={() => {
+              dispatch({ type: 'DECREMENT' })
+            }}
+          >
+            Decrement
+          </button>
+          <Counter />
+          <Hello />
+        </div>
+      )
+    }
+
+    const root = createRoot(document.getElementById('root'))
+    root.render(
+      <StoreProvider>
+        <App />
+      </StoreProvider>
+    )
+  </script>
+</html>
