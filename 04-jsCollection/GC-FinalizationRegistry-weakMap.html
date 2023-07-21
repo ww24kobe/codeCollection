@@ -1,0 +1,17 @@
+<script>
+  const registry = new FinalizationRegistry((item) => {
+    console.log('item:', item)
+  })
+
+  let user = { username: '张三' }
+  registry.register(user, 'user回收了')
+  let arr = [1, 2, user]
+  user = null
+  arr[2] = null
+
+  let user1 = { username: '李四' }
+  registry.register(user1, 'user1回收了')
+  const weakMap = new WeakMap()
+  weakMap.set(user1, 'user1-value')
+  user1 = null
+</script>

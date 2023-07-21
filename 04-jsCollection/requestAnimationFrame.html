@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #box {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        background-color: rgb(92, 45, 45);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box"></div>
+    <button id="start">start</button>
+    <button id="stop">stop</button>
+    <script>
+      let boxEle = document.getElementById('box')
+      let startEle = document.getElementById('start')
+      let stopEle = document.getElementById('stop')
+      let moveLeft = 0
+      let timer
+      startEle.addEventListener('click', function cb() {
+        // timer = setInterval(() => {
+        //   if (moveLeft > 500) {
+        //     moveLeft = 0
+        //   }
+        //   moveLeft += 1
+        //   boxEle.style.left = moveLeft + 'px'
+        //   console.log('exec setInterval')
+        // })
+        timer = requestAnimationFrame(() => {
+          if (moveLeft > 500) {
+            moveLeft = 0
+          }
+          moveLeft += 1
+          boxEle.style.left = moveLeft + 'px'
+          console.log('exec requestAnimationFrame')
+          requestAnimationFrame(cb)
+        })
+      })
+
+      // 方式1
+      stopEle.addEventListener('click', function () {
+        // clearInterval(timer)
+        cancelAnimationFrame(timer)
+      })
+    </script>
+  </body>
+</html>

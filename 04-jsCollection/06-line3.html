@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .line_ellipsis_2 {
+        overflow: hidden;
+        text-overflow: ellipsis; /*文本溢出显示省略号*/
+        display: -webkit-box; /*弹性伸缩盒子模型显示*/
+        -webkit-line-clamp: 3; /*限制在一个块元素显示的文本的行数*/
+        -webkit-box-orient: vertical; /*设置或检索伸缩盒对象的子元素的排列方式*/
+      }
+
+      #box {
+        width: 200px;
+        height: 66px;
+        border: 2px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box" class="line_ellipsis_2">
+      你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+      你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+      你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+      你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+      你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+      你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+      你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+      你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+      你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好
+    </div>
+  </body>
+</html>
